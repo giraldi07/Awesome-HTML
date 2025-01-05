@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hutan 3D Interaktif</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Load Three.js dari CDN yang valid -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r146/three.min.js"></script>
+    <script>
+        // Pastikan Three.js sudah terload
+        if (THREE) {
+            console.log("Three.js berhasil di-load!");
+        } else {
+            console.error("Three.js gagal di-load. Periksa koneksi internet atau CDN.");
+        }
+
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true; // Aktifkan bayangan
+        document.body.appendChild(renderer.domElement);
+
+        // Pencahayaan
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(10, 10, 10);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+
+        // Membuat tanah
+        const groundGeometry = new THREE.PlaneGeometry(100, 100);
+        const groundMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22, side: THREE.DoubleSide });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = Math.PI / 2;
+        ground.position.y = -5;
+        ground.receiveShadow = true;
+        scene.add(ground);
+
+        // Membuat pohon
+        function createTree(x, z) {
+            const trunkGeometry = new THREE.CylinderGeometry(0.5, 0.5, 5, 32);
+            const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.set(x, -2.5, z);
+            trunk.castShadow = true;
+            scene.add(trunk);
+
+            const leavesGeometry = new THREE.SphereGeometry(3, 32, 32);
+            const leavesMaterial = new THREE.MeshStandardMaterial({ color: 0x32CD32 });
+            const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+            leaves.position.set(x, 2, z);
+            leaves.castShadow = true;
+            scene.add(leaves);
+        }
+
+        // Menambahkan beberapa pohon
+        for (let i = 0; i < 50; i++) {
+            const x = Math.random() * 80 - 40;
+            const z = Math.random() * 80 - 40;
+            createTree(x, z);
+        }
+
+        // Posisi kamera
+        camera.position.set(0, 10, 20);
+        camera.lookAt(0, 0, 0);
+
+        // Kontrol kamera dengan mouse
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        document.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mouseup', () => isDragging = false);
+        document.addEventListener('mousemove', (event) => {
+            if (isDragging) {
+                const deltaX = event.clientX - previousMousePosition.x;
+                const deltaY = event.clientY - previousMousePosition.y;
+
+                camera.position.x -= deltaX * 0.01;
+                camera.position.y += deltaY * 0.01;
+                camera.lookAt(0, 0, 0);
+            }
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+        });
+
+        // Animasi
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        // Resize saat ukuran layar berubah
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Mulai animasi
+        animate();
+    </script>
+</body>
+</html>
