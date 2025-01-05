@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Vortex</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            background: radial-gradient(circle, #000428, #004e92);
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="galaxyCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Jumlah partikel
+        const numParticles = 500;
+        const particles = [];
+        const mouse = { x: undefined, y: undefined };
+
+        // Warna partikel
+        const colors = ['#ff9f43', '#ff6b6b', '#48dbfb', '#f368e0', '#1dd1a1'];
+
+        // Class Partikel
+        class Particle {
+            constructor(x, y, radius, color, velocity) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.velocity = velocity;
+                this.ttl = 200; // Time to live (umur partikel)
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            update() {
+                this.draw();
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.ttl--; // Kurangi umur partikel
+
+                // Bereaksi terhadap mouse
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 100) {
+                    this.velocity.x += dx * 0.01;
+                    this.velocity.y += dy * 0.01;
+                }
+            }
+        }
+
+        // Inisialisasi partikel
+        function init() {
+            particles.length = 0;
+            for (let i = 0; i < numParticles; i++) {
+                const radius = Math.random() * 3 + 1;
+                const x = canvas.width / 2;
+                const y = canvas.height / 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const velocity = {
+                    x: (Math.random() - 0.5) * 2,
+                    y: (Math.random() - 0.5) * 2
+                };
+                particles.push(new Particle(x, y, radius, color, velocity));
+            }
+        }
+
+        // Animasi partikel
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                particle.update();
+                if (particle.ttl <= 0) {
+                    particles.splice(index, 1); // Hapus partikel jika umurnya habis
+                }
+            });
+
+            // Tambahkan partikel baru secara terus-menerus
+            if (particles.length < numParticles) {
+                const radius = Math.random() * 3 + 1;
+                const x = canvas.width / 2;
+                const y = canvas.height / 2;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const velocity = {
+                    x: (Math.random() - 0.5) * 2,
+                    y: (Math.random() - 0.5) * 2
+                };
+                particles.push(new Particle(x, y, radius, color, velocity));
+            }
+        }
+
+        // Resize canvas saat ukuran layar berubah
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        // Deteksi posisi mouse
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Mulai animasi
+        init();
+        animate();
+    </script>
+</body>
+</html>
