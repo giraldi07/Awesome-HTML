@@ -76,6 +76,14 @@
                 transform: rotateX(270deg) rotateY(270deg) scale(0.8); 
             }
         }
+
+        @media (max-width: 600px) {
+            .cube-container {
+                flex-direction: column; /* Mengatur kubus berbaris secara vertikal */
+                gap: 50px; /* Menyesuaikan jarak antar kubus */
+            }
+        }
+
     </style>
 </head>
 <body>
