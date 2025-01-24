@@ -16,7 +16,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #1a1a1a;
+      background: linear-gradient(135deg, #1a1a1a, #000);
       color: #fff;
       display: flex;
       justify-content: center;
@@ -33,7 +33,7 @@
     }
 
     h1 {
-      font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+      font-size: clamp(2rem, 5vw, 3rem);
       margin-bottom: 20px;
       color: #fff;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
@@ -49,9 +49,9 @@
     .social-icons a {
       text-decoration: none;
       color: #fff;
-      font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive icon size */
-      width: clamp(60px, 10vw, 80px); /* Responsive width */
-      height: clamp(60px, 10vw, 80px); /* Responsive height */
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      width: clamp(60px, 10vw, 80px);
+      height: clamp(60px, 10vw, 80px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -86,32 +86,32 @@
     /* Specific Colors for Icons */
     .social-icons a.twitter:hover {
       color: #1da1f2;
-      box-shadow: 0 0 20px #1da1f2;
+      box-shadow: 0 0 30px #1da1f2;
     }
 
     .social-icons a.facebook:hover {
       color: #1877f2;
-      box-shadow: 0 0 20px #1877f2;
+      box-shadow: 0 0 30px #1877f2;
     }
 
     .social-icons a.instagram:hover {
       color: #e4405f;
-      box-shadow: 0 0 20px #e4405f;
+      box-shadow: 0 0 30px #e4405f;
     }
 
     .social-icons a.github:hover {
       color: #333;
-      box-shadow: 0 0 20px #333;
+      box-shadow: 0 0 30px #333;
     }
 
     .social-icons a.linkedin:hover {
       color: #0a66c2;
-      box-shadow: 0 0 20px #0a66c2;
+      box-shadow: 0 0 30px #0a66c2;
     }
 
     .social-icons a.youtube:hover {
       color: #ff0000;
-      box-shadow: 0 0 20px #ff0000;
+      box-shadow: 0 0 30px #ff0000;
     }
 
     /* 3D Text Styles */
@@ -120,7 +120,7 @@
       top: 10%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: clamp(4rem, 10vw, 8rem); /* Responsive font size */
+      font-size: clamp(4rem, 10vw, 8rem);
       font-weight: bold;
       text-transform: uppercase;
       color: transparent;
@@ -190,13 +190,13 @@
       icon.addEventListener('mouseenter', () => {
         const color = icon.getAttribute('data-color');
         const text = icon.getAttribute('data-text');
-        body.style.background = color;
+        body.style.background = `linear-gradient(135deg, ${color}, #000)`;
         text3d.textContent = text;
         text3d.classList.add('active');
       });
 
       icon.addEventListener('mouseleave', () => {
-        body.style.background = '#1a1a1a'; // Kembalikan ke warna default
+        body.style.background = 'linear-gradient(135deg, #1a1a1a, #000)';
         text3d.classList.remove('active');
       });
     });
@@ -204,7 +204,7 @@
     // Particles.js configuration
     particlesJS('particles-js', {
       particles: {
-        number: { value: 80 },
+        number: { value: 100 },
         color: { value: '#ffffff' },
         shape: { type: 'circle' },
         opacity: { value: 0.5, random: true },
