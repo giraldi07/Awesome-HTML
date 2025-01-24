@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive 3D Social Media Icons</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ====== General Styles ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      transition: background 0.5s ease;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem); /* Responsive font size */
+      margin-bottom: 20px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .social-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-icons a {
+      text-decoration: none;
+      color: #fff;
+      font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive icon size */
+      width: clamp(60px, 10vw, 80px); /* Responsive width */
+      height: clamp(60px, 10vw, 80px); /* Responsive height */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .social-icons a::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #ff00cc, #3333ff);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .social-icons a:hover::before {
+      opacity: 1;
+    }
+
+    .social-icons a:hover {
+      transform: translateY(-10px) scale(1.1) rotate(10deg);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Specific Colors for Icons */
+    .social-icons a.twitter:hover {
+      color: #1da1f2;
+      box-shadow: 0 0 20px #1da1f2;
+    }
+
+    .social-icons a.facebook:hover {
+      color: #1877f2;
+      box-shadow: 0 0 20px #1877f2;
+    }
+
+    .social-icons a.instagram:hover {
+      color: #e4405f;
+      box-shadow: 0 0 20px #e4405f;
+    }
+
+    .social-icons a.github:hover {
+      color: #333;
+      box-shadow: 0 0 20px #333;
+    }
+
+    .social-icons a.linkedin:hover {
+      color: #0a66c2;
+      box-shadow: 0 0 20px #0a66c2;
+    }
+
+    .social-icons a.youtube:hover {
+      color: #ff0000;
+      box-shadow: 0 0 20px #ff0000;
+    }
+
+    /* 3D Text Styles */
+    .text-3d {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(4rem, 10vw, 8rem); /* Responsive font size */
+      font-weight: bold;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 2px #fff;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+
+    .text-3d.active {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+      animation: floatText 3s infinite ease-in-out, neonGlow 2s infinite alternate;
+    }
+
+    @keyframes floatText {
+      0%, 100% {
+        transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+      }
+      50% {
+        transform: translate(-50%, -55%) rotateX(10deg) rotateY(10deg);
+      }
+    }
+
+    @keyframes neonGlow {
+      0% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.8);
+      }
+      100% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 1);
+      }
+    }
+
+    /* Background Particles */
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="container">
+    <h1>Follow Me</h1>
+    <div class="social-icons">
+      <a href="#" class="twitter" data-color="#1da1f2" data-text="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="facebook" data-color="#1877f2" data-text="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" class="instagram" data-color="#e4405f" data-text="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="github" data-color="#333" data-text="GitHub"><i class="fab fa-github"></i></a>
+      <a href="#" class="linkedin" data-color="#0a66c2" data-text="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#" class="youtube" data-color="#ff0000" data-text="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="text-3d" id="3d-text"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    // JavaScript untuk mengubah background dan menampilkan 3D text
+    const socialIcons = document.querySelectorAll('.social-icons a');
+    const body = document.body;
+    const text3d = document.getElementById('3d-text');
+
+    socialIcons.forEach(icon => {
+      icon.addEventListener('mouseenter', () => {
+        const color = icon.getAttribute('data-color');
+        const text = icon.getAttribute('data-text');
+        body.style.background = color;
+        text3d.textContent = text;
+        text3d.classList.add('active');
+      });
+
+      icon.addEventListener('mouseleave', () => {
+        body.style.background = '#1a1a1a'; // Kembalikan ke warna default
+        text3d.classList.remove('active');
+      });
+    });
+
+    // Particles.js configuration
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80 },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
